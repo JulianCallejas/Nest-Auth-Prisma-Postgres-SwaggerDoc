@@ -1,0 +1,833 @@
+
+window.onload = function() {
+  // Build a system
+  let url = window.location.search.match(/url=([^&]+)/);
+  if (url && url.length > 1) {
+    url = decodeURIComponent(url[1]);
+  } else {
+    url = window.location.origin;
+  }
+  let options = {
+  "swaggerDoc": {
+    "openapi": "3.0.0",
+    "paths": {
+      "/api/v1": {
+        "get": {
+          "operationId": "AppController_getHello",
+          "summary": "Check Server Status",
+          "description": "Check the Server is up and running",
+          "parameters": [],
+          "responses": {
+            "200": {
+              "description": "Ok",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/GetServerListeningResponse"
+                  }
+                }
+              }
+            }
+          },
+          "tags": [
+            "API-Server-Listening"
+          ]
+        }
+      },
+      "/api/v1/auth/register": {
+        "post": {
+          "operationId": "AuthController_register",
+          "summary": "REGISTER",
+          "description": "Public endpoint to register a new user with \"user\" Role.",
+          "parameters": [],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RegisterUserDto"
+                }
+              }
+            }
+          },
+          "responses": {
+            "201": {
+              "description": "Ok",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/LoginResponse"
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad request"
+            },
+            "500": {
+              "description": "Server error"
+            }
+          },
+          "tags": [
+            "Auth"
+          ]
+        }
+      },
+      "/api/v1/auth/login": {
+        "post": {
+          "operationId": "AuthController_login",
+          "summary": "LOGIN",
+          "description": "Public endpoint to login and get the Access Token",
+          "parameters": [],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoginUserDto"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Ok",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/LoginResponse"
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad request"
+            },
+            "500": {
+              "description": "Server error"
+            }
+          },
+          "tags": [
+            "Auth"
+          ]
+        }
+      },
+      "/api/v1/auth/refresh-token": {
+        "get": {
+          "operationId": "AuthController_refreshToken",
+          "summary": "REFRESH TOKEN",
+          "description": "Private endpoint allowed for logged in users to refresh the Access Token before it expires.",
+          "parameters": [],
+          "responses": {
+            "200": {
+              "description": "Ok",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/LoginResponse"
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "Unauthorized"
+            }
+          },
+          "tags": [
+            "Auth"
+          ],
+          "security": [
+            {
+              "bearer": []
+            }
+          ]
+        }
+      },
+      "/api/v1/users": {
+        "post": {
+          "operationId": "UserController_create",
+          "summary": "CREATE USER",
+          "description": "Private endpoint to Create a new User. It is allowed only by \"admin\" users, and allows the creation of users with \"admin\" Role.",
+          "parameters": [],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateUserDto"
+                }
+              }
+            }
+          },
+          "responses": {
+            "201": {
+              "description": "Created",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/User"
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad request"
+            },
+            "401": {
+              "description": "Unauthorized"
+            },
+            "500": {
+              "description": "Server error"
+            }
+          },
+          "tags": [
+            "Users"
+          ],
+          "security": [
+            {
+              "bearer": []
+            }
+          ]
+        },
+        "get": {
+          "operationId": "UserController_findAll",
+          "summary": "GET ALL USERS",
+          "description": "Private endpoint to list all Users. It is allowed only by \"admin\" users.",
+          "parameters": [],
+          "responses": {
+            "200": {
+              "description": "Ok",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/User"
+                    }
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "Unauthorized"
+            },
+            "403": {
+              "description": "Forbidden"
+            },
+            "500": {
+              "description": "Server error"
+            }
+          },
+          "tags": [
+            "Users"
+          ],
+          "security": [
+            {
+              "bearer": []
+            }
+          ]
+        }
+      },
+      "/api/v1/users/{id}": {
+        "get": {
+          "operationId": "UserController_findOne",
+          "summary": "GET USER BY ID",
+          "description": "Private endpoint to get user data by a specific ID. <ul><li>The \"user\" role is permitted to access only their own information.</li><li>The \"admin\" role has the privilege to access information of any user</li></ul>",
+          "parameters": [
+            {
+              "name": "id",
+              "required": true,
+              "in": "path",
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Ok",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/User"
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "Unauthorized"
+            },
+            "500": {
+              "description": "Server error"
+            }
+          },
+          "tags": [
+            "Users"
+          ],
+          "security": [
+            {
+              "bearer": []
+            }
+          ]
+        },
+        "patch": {
+          "operationId": "UserController_update",
+          "summary": "UPDATE USER BY ID",
+          "description": "Private endpoint to update user data by Id. <ul><li>The \"user\" role is permitted to update only their own information.</li><li>The \"admin\" role has the privilege to update information of any user</li><li>Only the \"admin\" role can update the \"role\" field</li></ul>",
+          "parameters": [
+            {
+              "name": "id",
+              "required": true,
+              "in": "path",
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateUserDto"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Ok",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/User"
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad request"
+            },
+            "401": {
+              "description": "Unauthorized"
+            },
+            "500": {
+              "description": "Server error"
+            }
+          },
+          "tags": [
+            "Users"
+          ],
+          "security": [
+            {
+              "bearer": []
+            }
+          ]
+        },
+        "delete": {
+          "operationId": "UserController_remove",
+          "summary": "DELETE USER BY ID",
+          "description": "Private endpoint to delete user by Id. <ul><li>The \"user\" role is permitted to remove only their own information.</li><li>The \"admin\" role has the privilege to delete any user</li></ul>",
+          "parameters": [
+            {
+              "name": "id",
+              "required": true,
+              "in": "path",
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "content": {
+                "application/json": {
+                  "example": {
+                    "message": "User deleted"
+                  }
+                }
+              },
+              "description": ""
+            },
+            "400": {
+              "description": "Bad request"
+            },
+            "401": {
+              "description": "Unauthorized"
+            },
+            "500": {
+              "description": "Server error"
+            }
+          },
+          "tags": [
+            "Users"
+          ],
+          "security": [
+            {
+              "bearer": []
+            }
+          ]
+        }
+      },
+      "/api/v1/users/email/{email}": {
+        "get": {
+          "operationId": "UserController_findOneByEmail",
+          "summary": "GET USER BY EMAIL",
+          "description": "Private endpoint to get user data by Email. <ul><li>The \"user\" role is permitted to access only their own information.</li><li>The \"admin\" role has the privilege to access information of any user</li></ul>",
+          "parameters": [
+            {
+              "name": "email",
+              "required": true,
+              "in": "path",
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Ok",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/User"
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "Unauthorized"
+            },
+            "500": {
+              "description": "Server error"
+            }
+          },
+          "tags": [
+            "Users"
+          ],
+          "security": [
+            {
+              "bearer": []
+            }
+          ]
+        },
+        "patch": {
+          "operationId": "UserController_updateByEmail",
+          "summary": "UPDATE USER BY EMAIL",
+          "description": "Private endpoint to update user data by email. <ul><li>The \"user\" role is permitted to update only their own information.</li><li>The \"admin\" role has the privilege to update information of any user</li><li>Only the \"admin\" role can update the \"role\" field</li></ul>",
+          "parameters": [
+            {
+              "name": "email",
+              "required": true,
+              "in": "path",
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateUserDto"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Ok",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/User"
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad request"
+            },
+            "401": {
+              "description": "Unauthorized"
+            },
+            "500": {
+              "description": "Server error"
+            }
+          },
+          "tags": [
+            "Users"
+          ],
+          "security": [
+            {
+              "bearer": []
+            }
+          ]
+        },
+        "delete": {
+          "operationId": "UserController_removeByEmail",
+          "summary": "DELETE USER BY EMAIL",
+          "description": "Private endpoint to delete user by Email. <ul><li>The \"user\" role is permitted to remove only their own information.</li><li>The \"admin\" role has the privilege to delete any user</li></ul>",
+          "parameters": [
+            {
+              "name": "email",
+              "required": true,
+              "in": "path",
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "content": {
+                "application/json": {
+                  "example": {
+                    "message": "User deleted"
+                  }
+                }
+              },
+              "description": ""
+            },
+            "400": {
+              "description": "Bad request"
+            },
+            "401": {
+              "description": "Unauthorized"
+            },
+            "500": {
+              "description": "Server error"
+            }
+          },
+          "tags": [
+            "Users"
+          ],
+          "security": [
+            {
+              "bearer": []
+            }
+          ]
+        }
+      }
+    },
+    "info": {
+      "title": "Nest Postgres Authentication REST API Template Documentation",
+      "description": "\n  <p>This Nest.js REST API template provides a robust foundation for building secure and scalable web applications. With built-in user registration, JWT authentication, and protected routes.</p>\n  <p>The API follows RESTful principles, making it easy to integrate and interact with from various client applications.</p>\n  <p>Key features of this API template include:</p>\n  <ul>\n    <li>User Registration and Management</li>\n    <li>JWT Token-based Authentication</li>\n    <li>Role-based Access Control for Protected Routes</li>\n    <li>CRUD Operations for User Entities</li>\n  </ul>\n",
+      "version": "1.0",
+      "contact": {}
+    },
+    "tags": [],
+    "servers": [],
+    "components": {
+      "securitySchemes": {
+        "bearer": {
+          "scheme": "bearer",
+          "bearerFormat": "JWT",
+          "type": "http"
+        }
+      },
+      "schemas": {
+        "GetServerListeningResponse": {
+          "type": "object",
+          "properties": {
+            "ok": {
+              "type": "boolean",
+              "example": true,
+              "description": "ok",
+              "format": "boolean"
+            },
+            "message": {
+              "type": "string",
+              "example": "API is working",
+              "description": "message",
+              "format": "string"
+            }
+          },
+          "required": [
+            "ok",
+            "message"
+          ]
+        },
+        "RegisterUserDto": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "description": "Name",
+              "nullable": false,
+              "example": "John Sample"
+            },
+            "email": {
+              "type": "string",
+              "description": "Email",
+              "uniqueItems": true,
+              "nullable": false,
+              "example": "youremail@example.com"
+            },
+            "password": {
+              "type": "string",
+              "description": "Password: Min 6 characters, 1 uppercase, 1 lowercase and 1 number",
+              "nullable": false,
+              "example": "Password123"
+            },
+            "passwordconf": {
+              "type": "string",
+              "description": "Confirm Password, it must be the same as the password",
+              "nullable": false,
+              "example": "Password123"
+            },
+            "image": {
+              "type": "string",
+              "description": "User Avatar Image",
+              "nullable": true,
+              "example": "https://picsum.photos/200/300"
+            }
+          },
+          "required": [
+            "name",
+            "email",
+            "password",
+            "passwordconf"
+          ]
+        },
+        "User": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string",
+              "description": "User Id, generated by uuid",
+              "nullable": false,
+              "example": "2313w49-0db7-4v79-aacc-52624343bf2t"
+            },
+            "name": {
+              "type": "string",
+              "description": "Name",
+              "nullable": false,
+              "example": "John Sample"
+            },
+            "email": {
+              "type": "string",
+              "description": "Email",
+              "uniqueItems": true,
+              "nullable": false,
+              "example": "youremail@example.com"
+            },
+            "emailVerified": {
+              "type": "string",
+              "description": "Email Verified",
+              "nullable": true,
+              "example": "2022-01-01T00:00:00.000Z"
+            },
+            "role": {
+              "type": "string",
+              "description": "User Role (admin, user)",
+              "nullable": false,
+              "example": "user"
+            },
+            "image": {
+              "type": "string",
+              "description": "Image URL",
+              "nullable": true,
+              "example": "https://picsum.photos/200"
+            },
+            "createdAt": {
+              "type": "string",
+              "description": "Created At",
+              "nullable": true,
+              "example": "2022-01-01T00:00:00.000Z"
+            },
+            "updatedAt": {
+              "type": "string",
+              "description": "Updated At",
+              "nullable": true,
+              "example": "2022-01-01T00:00:00.000Z"
+            }
+          },
+          "required": [
+            "id",
+            "name",
+            "email",
+            "role"
+          ]
+        },
+        "LoginResponse": {
+          "type": "object",
+          "properties": {
+            "user": {
+              "description": "User Data",
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/User"
+                }
+              ],
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/User"
+                }
+              ]
+            },
+            "token": {
+              "type": "string",
+              "description": "JWT Token",
+              "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+            }
+          },
+          "required": [
+            "user",
+            "token"
+          ]
+        },
+        "LoginUserDto": {
+          "type": "object",
+          "properties": {
+            "email": {
+              "type": "string",
+              "description": "Email",
+              "nullable": false,
+              "example": "youremail@example.com"
+            },
+            "password": {
+              "type": "string",
+              "description": "User Password",
+              "nullable": false,
+              "example": "Password123"
+            }
+          },
+          "required": [
+            "email",
+            "password"
+          ]
+        },
+        "CreateUserDto": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "description": "Name",
+              "nullable": false,
+              "example": "John Sample"
+            },
+            "email": {
+              "type": "string",
+              "description": "Email",
+              "uniqueItems": true,
+              "nullable": false,
+              "example": "youremail@example.com"
+            },
+            "password": {
+              "type": "string",
+              "description": "Password: Min 6 characters, 1 uppercase, 1 lowercase and 1 number",
+              "nullable": false,
+              "example": "Password123"
+            },
+            "passwordconf": {
+              "type": "string",
+              "description": "Confirm Password, it must be the same as the password",
+              "nullable": false,
+              "example": "Password123"
+            },
+            "image": {
+              "type": "string",
+              "description": "User Avatar Image",
+              "nullable": true,
+              "example": "https://picsum.photos/200/300"
+            },
+            "role": {
+              "type": "string",
+              "description": "User Role (admin, user)",
+              "default": "user",
+              "example": "user"
+            }
+          },
+          "required": [
+            "name",
+            "email",
+            "password",
+            "passwordconf",
+            "role"
+          ]
+        },
+        "UpdateUserDto": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "description": "Name",
+              "nullable": false,
+              "example": "John Sample"
+            },
+            "email": {
+              "type": "string",
+              "description": "Email",
+              "uniqueItems": true,
+              "nullable": false,
+              "example": "youremail@example.com"
+            },
+            "password": {
+              "type": "string",
+              "description": "Password: Min 6 characters, 1 uppercase, 1 lowercase and 1 number",
+              "nullable": false,
+              "example": "Password123"
+            },
+            "passwordconf": {
+              "type": "string",
+              "description": "Confirm Password, it must be the same as the password",
+              "nullable": false,
+              "example": "Password123"
+            },
+            "image": {
+              "type": "string",
+              "description": "User Avatar Image",
+              "nullable": true,
+              "example": "https://picsum.photos/200/300"
+            },
+            "role": {
+              "type": "string",
+              "description": "User Role (admin, user)",
+              "default": "user",
+              "example": "user"
+            }
+          }
+        }
+      }
+    }
+  },
+  "customOptions": {
+    "persistAuthorization": true
+  }
+};
+  url = options.swaggerUrl || url
+  let urls = options.swaggerUrls
+  let customOptions = options.customOptions
+  let spec1 = options.swaggerDoc
+  let swaggerOptions = {
+    spec: spec1,
+    url: url,
+    urls: urls,
+    dom_id: '#swagger-ui',
+    deepLinking: true,
+    presets: [
+      SwaggerUIBundle.presets.apis,
+      SwaggerUIStandalonePreset
+    ],
+    plugins: [
+      SwaggerUIBundle.plugins.DownloadUrl
+    ],
+    layout: "StandaloneLayout"
+  }
+  for (let attrname in customOptions) {
+    swaggerOptions[attrname] = customOptions[attrname];
+  }
+  let ui = SwaggerUIBundle(swaggerOptions)
+
+  if (customOptions.initOAuth) {
+    ui.initOAuth(customOptions.initOAuth)
+  }
+
+  if (customOptions.authAction) {
+    ui.authActions.authorize(customOptions.authAction)
+  }
+  
+  window.ui = ui
+}
