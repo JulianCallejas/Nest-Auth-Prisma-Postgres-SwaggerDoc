@@ -33,15 +33,24 @@ This **`NestJS Auth REST API Template`** is designed to jumpstart your developme
 ## About the documentation
 
 The API documentation is generated using Swagger, a powerful yet easy-to-use suite of API developer tools for teams and individuals, enabling development across the entire API lifecycle, from design and documentation, to test and deployment.
-You can access the API documentation at [**`NestJS Auth REST API Template Swagger Documentation`**](https://juliancallejas.github.io/NestJS-Auth-REST-API-Template-SwaggerDoc/)
+You can access a demo version of the Swagger documentation for this APY at the following link: [**`NestJS Auth REST API Template Swagger Documentation`**](https://juliancallejas.github.io/NestJS-Auth-REST-API-Template-SwaggerDoc/)
 
-## Postman Documentation
+You can also access the Swagger documentation With the REST API running locally by visiting <a href="http://localhost:3000/api" >http://localhost:3000/api</a>.
 
-In addition to the Swagger documentation, we also provide a comprehensive Postman documentation for the **Nest-Auth-Prisma-Postgres** REST API.
-Our Postman documentation includes a collection of about **160 tests** that cover all the API endpoints. These tests serve as a valuable resource for understanding the expected request and response patterns and for validating the functionality of the API.
+### Postman
 
-You can access the Postman documentation at the following link: [**`NestJS Auth REST API Template Postman Documentation`**](https://www.postman.com/jc-develop/workspace/nest-auth-rest-apis/documentation/22997111-3a008800-dea9-4b27-b1bc-2a3ac5be1e33)
-You can access the Postman test collection at the following link: [**`NestJS Auth REST API Template Postman Test Collection`**](https://www.postman.com/jc-develop/workspace/nest-auth-rest-apis/documentation/22997111-7ae8198b-97f8-4e01-9830-77dd1e10088b)
+In addition to the Swagger documentation, we also provide a comprehensive Postman documentation for the **`NestJS Auth REST API`**.
+
+Postman documentation collection is available at [**`NestJS Auth REST API Template Postman Documentation`**](https://www.postman.com/jc-develop/workspace/nest-auth-rest-apis/documentation/22997111-3a008800-dea9-4b27-b1bc-2a3ac5be1e33)
 
 Please note that you'll need to have Postman installed on your machine to import and use the collection.
 
+Our Postman documentation includes a collection of about **160 tests** that cover all the API endpoints. These tests serve as a valuable resource for understanding the expected request and response patterns and for validating the functionality of the API. This is the report for the last test run with 3 iterations: [**`NestJS Auth REST API Template PostgreSQL Prisma Tests`**](https://juliancallejas.github.io/NestJS-Auth-REST-API-Template-Postgres-Prisma-Test/)
+
+You can access to the test collection at [**`NestJS Auth REST API Template Postman Test Collection`**](https://www.postman.com/jc-develop/workspace/nest-auth-rest-apis/documentation/22997111-7ae8198b-97f8-4e01-9830-77dd1e10088b)
+
+## License
+
+This project is licensed under the MIT License. See the `LICENSE` file for more details.
+
+## 🌟 You’re the superstar of our show! Thanks for lighting up our repository with your presence. We hope you enjoy exploring our code as much as we enjoyed writing it.
