@@ -33,7 +33,7 @@ This **`NestJS Auth REST API Template`** is designed to jumpstart your developme
 ## About the documentation
 
 The API documentation is generated using Swagger, a powerful yet easy-to-use suite of API developer tools for teams and individuals, enabling development across the entire API lifecycle, from design and documentation, to test and deployment.
-You can access the API documentation at [**`NestJS Auth REST API Template Swagger Documentation`**]([https://juliancallejas.github.io/twqTest/](https://juliancallejas.github.io/NestJS-Auth-REST-API-Template-SwaggerDoc/)).
+You can access the API documentation at [**`NestJS Auth REST API Template Swagger Documentation`**](https://juliancallejas.github.io/NestJS-Auth-REST-API-Template-SwaggerDoc/)
 
 ## Postman Documentation
 
