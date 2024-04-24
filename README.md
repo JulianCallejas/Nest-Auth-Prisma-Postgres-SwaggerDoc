@@ -33,15 +33,15 @@ This **`NestJS Auth REST API Template`** is designed to jumpstart your developme
 ## About the documentation
 
 The API documentation is generated using Swagger, a powerful yet easy-to-use suite of API developer tools for teams and individuals, enabling development across the entire API lifecycle, from design and documentation, to test and deployment.
-You can access the API documentation at <a style="color:red" href="https://juliancallejas.github.io/NestJS-Auth-REST-API-Template-SwaggerDoc/" >https://juliancallejas.github.io/Nest-Auth-SwaggerDoc/</a>.
+You can access the API documentation at [**`NestJS Auth REST API Template Swagger Documentation`**]([https://juliancallejas.github.io/twqTest/](https://juliancallejas.github.io/NestJS-Auth-REST-API-Template-SwaggerDoc/)).
 
 ## Postman Documentation
 
 In addition to the Swagger documentation, we also provide a comprehensive Postman documentation for the **Nest-Auth-Prisma-Postgres** REST API.
 Our Postman documentation includes a collection of about **160 tests** that cover all the API endpoints. These tests serve as a valuable resource for understanding the expected request and response patterns and for validating the functionality of the API.
 
-You can access the Postman documentation at the following link: <a href="https://www.postman.com/jc-develop/workspace/nest-auth-rest-apis/documentation/22997111-3a008800-dea9-4b27-b1bc-2a3ac5be1e33" >https://www.postman.com/jc-develop/</a>.
-You can access the Postman test collection at the following link: <a href="https://www.postman.com/jc-develop/workspace/nest-auth-rest-apis/documentation/22997111-7ae8198b-97f8-4e01-9830-77dd1e10088b" >https://www.postman.com/jc-develop/test</a>
+You can access the Postman documentation at the following link: [**`NestJS Auth REST API Template Postman Documentation`**](https://www.postman.com/jc-develop/workspace/nest-auth-rest-apis/documentation/22997111-3a008800-dea9-4b27-b1bc-2a3ac5be1e33)
+You can access the Postman test collection at the following link: [**`NestJS Auth REST API Template Postman Test Collection`**](https://www.postman.com/jc-develop/workspace/nest-auth-rest-apis/documentation/22997111-7ae8198b-97f8-4e01-9830-77dd1e10088b)
 
 Please note that you'll need to have Postman installed on your machine to import and use the collection.
 
