@@ -1,6 +1,6 @@
 # NestJS Auth REST API Template Swagger Documentation
 
-Welcome to the GitHub repository for the [**`NestJS Auth REST API Template`**](https://juliancallejas.github.io/twqTest/) Swagger Documentation.
+Welcome to the GitHub repository for the [**`NestJS Auth REST API Template`**](https://github.com/JulianCallejas/NestJS-Auth-REST-API-PostgreSQL-Prisma-Template) Swagger Documentation.
 This repository hosts the static Swagger documentation page for our **`NestJS Auth REST API Template`**, making it easy for developers to understand and interact with our API endpoints.
 
 ## About the API **`NestJS Auth REST API Template`**
